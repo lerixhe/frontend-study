@@ -17,3 +17,4 @@ wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 ### 安装node
 
  nvm install node # "node" is an alias for the latest version
+ 
