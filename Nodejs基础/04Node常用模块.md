@@ -24,7 +24,7 @@ npm是世界上生态最丰富的社区，没有之一。基本上要啥有啥
     npm install --save XX
 安装一个包，并保存到package.json文件中
 
-## Node自带全局变量
+## Node自带全局变量 
 
 - __dirname: 当前文件目录
 - __filename: 当前文件命+绝对路径
@@ -61,7 +61,34 @@ fs.readFile是整个读入内存，不适用于大文件，可使用流对象处
 
 fs.createReadStream可创建一个流对象
 
-## 异步IO的回调地狱
+## 异步IO
+
+### 回调函数
+
+回调函数是一种写法，而非函数类型。在IO的异步处理中，经常面临这种情况：等待IO操作完成后，一定要执行某个函数。这种情况被执行的函数，通常作为参数传入到IO函数中。回来，这种定义扩大了，通常，如果一个函数作为参数需要依赖另一个函数执行调用，就叫做回调函数（不限于IO操作）
+
+如下面的go语言例子
+
+```golang
+package main
+import "fmt"
+
+type Callback func(x, y int) int
+// 提供一个接口，让外部去实现
+func test(x, y int, callback Callback) int {
+    return callback(x, y)
+}
+// 回调函数的具体实现
+func add(x, y int) int {
+    return x + y
+}
+func main() {
+    x, y := 1, 2
+    fmt.Println(test(x, y, add))
+}
+```
+
+### 异步IO的回调地狱
 
 异步IO使用回调过度造成callback hell，为了解决这个问题，诞生了promise和async/await
 
@@ -136,8 +163,8 @@ promise可以对异步回调代码进行包装，把原来的一个回调拆成2
 
 ## 模块导出
 
-当用户自己写了一个模块（XX.js）后，如果需要在其他文件中使用，并不能直接require到
-需要用户自定义的的模块下加入以下代码
+当用户自己写了一个模块（XX.js）后，如果需要在其他文件中使用，并不能直接通过require得到
+需要在用户自定义的的模块下exports导出才行，代码如下
 
     modle.exports = funcName//只导出一个方法，注意是方法名
 或
