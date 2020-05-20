@@ -31,6 +31,27 @@
     - onclick需要写成onClick
     - 组件的方法内部this容易与标签本身的this冲突，需要使用this.fnName.bind(this,prams)进行绑定。
     fnName为自定义的方法名称，prams为此方法的参数。
+    
+    this指代当前class的对象，js的class内部的this与内部定义的方法之间的关系：class内部的this，能找到这个方法，但不会传递到方法内部。故当在方法内部使用this时需要谨慎，入宫在外部调用这个方法，可能导致方法内的this找不到对应的对象（undefined），为了避免这个问题需要在构造方法中进行绑定：this.handleClick = this.handleClick.bind(this)
+
+
+    示例1免绑的写法：利用了箭头函数this暴露的特点。
+    ```js
+    class LoggingButton extends React.Component {
+  handleClick() {
+    console.log('this is:', this);
+  }
+
+  render() {
+    // 此语法确保 `handleClick` 内的 `this` 已被绑定。
+    return (
+      <button onClick={() => this.handleClick()}>
+        Click me
+      </button>
+    );
+  }
+}
+```
 
 5. 组件状态属性
 
